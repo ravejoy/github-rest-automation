@@ -2,6 +2,7 @@ plugins {
     java
     jacoco
     id("com.diffplug.spotless") version "6.25.0"
+    id("io.qameta.allure") version "2.12.0"
 }
 
 group = "com.ravejoy.github"
@@ -30,14 +31,14 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.26.3")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("ch.qos.logback:logback-classic:1.5.8")
+    testImplementation("io.qameta.allure:allure-junit5:2.27.0")
 }
 
 tasks.test {
     useJUnitPlatform()
-    testLogging {
-        events("FAILED", "SKIPPED")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-        showStandardStreams = false
+    reports {
+        junitXml.required.set(true)
+        html.required.set(true)
     }
 }
 
@@ -65,5 +66,17 @@ spotless {
     kotlinGradle {
         target("**/*.gradle.kts")
         ktlint("1.2.1")
+    }
+}
+
+allure {
+    version.set("2.29.0")
+    adapter {
+        frameworks {
+            junit5 {
+                enabled.set(true)
+            }
+        }
+        aspectjWeaver.set(true)
     }
 }
