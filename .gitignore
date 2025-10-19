@@ -1,10 +1,13 @@
-﻿.gradle/
+﻿# Gradle
+.gradle/
 build/
 out/
+
+# IDE
 .idea/
 *.iml
+.vscode/
+
+# OS files
 .DS_Store
-# local env/config
-.env
-.env.*
-local.properties
+Thumbs.db
