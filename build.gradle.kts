@@ -21,6 +21,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2")
     implementation("org.slf4j:slf4j-api:2.0.16")
+    implementation("io.rest-assured:rest-assured:5.5.0")
     runtimeOnly("ch.qos.logback:logback-classic:1.5.8")
 
     testImplementation("io.rest-assured:rest-assured:5.5.0")
