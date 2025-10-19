@@ -3,8 +3,16 @@ name: CI
 on:
   pull_request:
     branches: ["main"]
+    paths-ignore:
+      - "**/*.md"
+      - "LICENSE"
+      - ".github/ISSUE_TEMPLATE/**"
   push:
     branches: ["main"]
+    paths-ignore:
+      - "**/*.md"
+      - "LICENSE"
+      - ".github/ISSUE_TEMPLATE/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,46 +26,49 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: read
-      pull-requests: write
-      checks: write
     steps:
       - uses: actions/checkout@v4
-      - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@v2
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: "21"
           distribution: "temurin"
           cache: "gradle"
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+
       - name: Spotless check
-        run: ./gradlew --no-daemon spotlessCheck
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: spotlessCheck
+          validate-wrappers: true
+
       - name: Build & test with coverage
-        run: ./gradlew --no-daemon clean test jacocoTestReport
-        env:
-          GITHUB_TOKEN: ${{ secrets.RAVEJOY_TEST_TOKEN }}
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: clean test jacocoTestReport
+          validate-wrappers: true
+
       - name: Upload JUnit results
         uses: actions/upload-artifact@v4
         with:
           name: junit-results
           path: build/test-results/test
           if-no-files-found: ignore
+
       - name: Upload JaCoCo report
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: build/reports/jacoco/test
           if-no-files-found: ignore
+
       - name: Generate Allure report
         uses: simple-elf/allure-report-action@v1
         if: always()
         with:
           allure_results: build/allure-results
           allure_report: build/allure-report
+
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         if: always()
@@ -65,6 +76,7 @@ jobs:
           name: allure-report
           path: build/allure-report
           if-no-files-found: ignore
+
       - name: Publish unit test summary
         if: always()
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -72,32 +84,41 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           files: build/test-results/test/*.xml
+          check_run: false
+
       - name: Add report links to PR summary
         if: always()
         run: |
           echo "### Reports" >> $GITHUB_STEP_SUMMARY
-          echo "- JUnit artifacts: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Allure nightly (Pages): enable in Settings → Pages" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflow artifacts: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Nightly Allure (GitHub Pages): enable Pages in Settings → Pages" >> $GITHUB_STEP_SUMMARY
 
   sonar:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: build-test
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork == false }}
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: "21"
           distribution: "temurin"
           cache: "gradle"
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
+
       - name: Build for Sonar
-        run: ./gradlew --no-daemon test jacocoTestReport
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: test jacocoTestReport
+          validate-wrappers: true
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         env:
