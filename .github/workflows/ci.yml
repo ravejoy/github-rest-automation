@@ -21,6 +21,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      checks: write
     steps:
       - uses: actions/checkout@v4
       - name: Validate Gradle wrapper
@@ -67,6 +68,8 @@ jobs:
       - name: Publish unit test summary
         if: always()
         uses: EnricoMi/publish-unit-test-result-action@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           files: build/test-results/test/*.xml
       - name: Add report links to PR summary
