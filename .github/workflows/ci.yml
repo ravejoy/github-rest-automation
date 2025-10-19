@@ -6,14 +6,25 @@ on:
   push:
     branches: ["main"]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v2
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -53,9 +64,21 @@ jobs:
           name: allure-report
           path: build/allure-report
           if-no-files-found: ignore
+      - name: Publish unit test summary
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: build/test-results/test/*.xml
+      - name: Add report links to PR summary
+        if: always()
+        run: |
+          echo "### Reports" >> $GITHUB_STEP_SUMMARY
+          echo "- JUnit artifacts: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Allure nightly (Pages): enable in Settings → Pages" >> $GITHUB_STEP_SUMMARY
 
   sonar:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: build-test
     permissions:
       contents: read
