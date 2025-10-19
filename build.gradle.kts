@@ -32,7 +32,6 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("ch.qos.logback:logback-classic:1.5.8")
     testImplementation("io.qameta.allure:allure-junit5:2.27.0")
-
 }
 
 tasks.test {
