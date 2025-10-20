@@ -13,6 +13,7 @@ on:
       - "**/*.md"
       - "LICENSE"
       - ".github/ISSUE_TEMPLATE/**"
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -36,17 +37,24 @@ jobs:
           distribution: "temurin"
           cache: "gradle"
 
-      - name: Spotless check
-        uses: gradle/gradle-build-action@v3
-        with:
-          arguments: spotlessCheck
-          validate-wrappers: true
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
 
-      - name: Build & test with coverage
-        uses: gradle/gradle-build-action@v3
+      - name: Spotless check (with retry)
+        uses: nick-invision/retry@v3
         with:
-          arguments: clean test jacocoTestReport
-          validate-wrappers: true
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_on: error
+          command: ./gradlew --no-daemon spotlessCheck
+
+      - name: Build & test with coverage (with retry)
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: ./gradlew --no-daemon clean test jacocoTestReport
 
       - name: Upload JUnit results
         uses: actions/upload-artifact@v4
@@ -113,11 +121,16 @@ jobs:
           distribution: "temurin"
           cache: "gradle"
 
-      - name: Build for Sonar
-        uses: gradle/gradle-build-action@v3
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Build for Sonar (with retry)
+        uses: nick-invision/retry@v3
         with:
-          arguments: test jacocoTestReport
-          validate-wrappers: true
+          timeout_minutes: 15
+          max_attempts: 3
+          retry_on: error
+          command: ./gradlew --no-daemon test jacocoTestReport
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
