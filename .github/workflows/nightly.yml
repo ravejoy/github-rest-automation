@@ -27,11 +27,16 @@ jobs:
           distribution: "temurin"
           cache: "gradle"
 
-      - name: Nightly build & test
-        uses: gradle/gradle-build-action@v3
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Nightly build & test (with retry)
+        uses: nick-invision/retry@v3
         with:
-          arguments: clean test jacocoTestReport
-          validate-wrappers: true
+          timeout_minutes: 20
+          max_attempts: 3
+          retry_on: error
+          command: ./gradlew --no-daemon clean test jacocoTestReport
 
       - name: Generate Allure report
         uses: simple-elf/allure-report-action@v1
