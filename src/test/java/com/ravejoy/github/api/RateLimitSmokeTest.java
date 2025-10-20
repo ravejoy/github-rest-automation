@@ -23,9 +23,7 @@ class RateLimitSmokeTest {
   @Test
   @DisplayName("GET /rate_limit returns 200 and has 'resources' node")
   void rateLimitEndpointResponds200AndHasResourcesNode() {
-    var resp = RestAssured.given()
-        .baseUri(AppConfig.API_URL)
-        .get(RATE_LIMIT);
+    var resp = RestAssured.given().baseUri(AppConfig.API_URL).get(RATE_LIMIT);
 
     resp.then().statusCode(OK);
     assertThat(resp.jsonPath().getMap("resources")).isNotNull();
