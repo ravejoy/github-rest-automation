@@ -35,7 +35,17 @@ dependencies {
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        val include =
+            System.getProperty("includeTags")?.takeIf { it.isNotBlank() }
+                ?.split(",")?.map { it.trim() }?.toTypedArray()
+        if (include != null) includeTags(*include)
+
+        val exclude =
+            System.getProperty("excludeTags")?.takeIf { it.isNotBlank() }
+                ?.split(",")?.map { it.trim() }?.toTypedArray()
+        if (exclude != null) excludeTags(*exclude)
+    }
     reports {
         junitXml.required.set(true)
         html.required.set(true)
