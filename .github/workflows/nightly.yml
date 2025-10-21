@@ -43,17 +43,14 @@ jobs:
           retry_on: error
           command: ./gradlew --no-daemon clean test jacocoTestReport
 
-      - name: Generate Allure report
-        uses: simple-elf/allure-report-action@v1
-        with:
-          allure_results: build/allure-results
-          allure_report: build/reports/allure-report/allureReport
+      - name: Generate Allure report (Gradle)
+        run: ./gradlew --no-daemon clean test jacocoTestReport allureReport
 
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-nightly
-          path: build/allure-report
+          path: build/reports/allure-report/allureReport
           if-no-files-found: ignore
 
       - name: Upload JUnit results
