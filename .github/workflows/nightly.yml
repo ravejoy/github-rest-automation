@@ -46,6 +46,14 @@ jobs:
       - name: Generate Allure report (Gradle)
         run: ./gradlew --no-daemon clean test jacocoTestReport allureReport
 
+      - name: Debug Allure directories
+        if: always()
+        run: |
+          echo "=== build/allure/allure-results ==="
+          ls -la build/allure/allure-results || true
+          echo "=== build/reports/allure-report/allureReport ==="
+          ls -la build/reports/allure-report/allureReport || true
+
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         with:
