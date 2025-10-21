@@ -47,7 +47,7 @@ jobs:
         uses: simple-elf/allure-report-action@v1
         with:
           allure_results: build/allure-results
-          allure_report: build/allure-report
+          allure_report: build/reports/allure-report/allureReport
 
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
@@ -69,7 +69,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: build/allure-report
+          path: build/reports/allure-report/allureReport
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
