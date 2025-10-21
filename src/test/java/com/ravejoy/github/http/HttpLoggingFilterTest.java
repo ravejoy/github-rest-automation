@@ -8,6 +8,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import com.ravejoy.github.api.Endpoints;
 import com.ravejoy.github.http.filter.HttpLoggingFilter;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -27,9 +28,6 @@ import org.slf4j.LoggerFactory;
 @Epic("HTTP infra")
 @Feature("Logging filter")
 class HttpLoggingFilterTest {
-
-  private static final String PING = "ping";
-  private static final String RATE_LIMIT = "rate_limit";
 
   private MockWebServer server;
   private RequestSpecification spec;
@@ -76,7 +74,7 @@ class HttpLoggingFilterTest {
             .spec(spec)
             .header("Authorization", "Bearer TOP_SECRET_TOKEN")
             .when()
-            .get(PING)
+            .get(Endpoints.Mock.PING)
             .then()
             .extract();
 
@@ -98,7 +96,7 @@ class HttpLoggingFilterTest {
             .spec(spec)
             .header("Authorization", "Bearer ABC")
             .when()
-            .get(RATE_LIMIT)
+            .get(Endpoints.Github.RATE_LIMIT)
             .then()
             .extract();
 

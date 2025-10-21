@@ -6,6 +6,7 @@ import static com.ravejoy.github.http.StatusCode.TOO_MANY_REQUESTS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ravejoy.github.api.Endpoints;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.builder.RequestSpecBuilder;
@@ -23,11 +24,6 @@ import org.junit.jupiter.api.Test;
 @Epic("HTTP infra")
 @Feature("Retry logic")
 class HttpExecutorTest {
-
-  private static final String RATE_LIMIT = "rate_limit";
-  private static final String REPOS = "repos";
-  private static final String SEARCH = "search";
-  private static final String PING = "ping";
 
   private final ObjectMapper om = new ObjectMapper();
 
@@ -64,7 +60,7 @@ class HttpExecutorTest {
             .setResponseCode(OK)
             .setBody(om.writeValueAsString(java.util.Map.of("ok", true))));
 
-    var resp = HttpExecutor.getWithRetry(spec, RATE_LIMIT, 3, null);
+    var resp = HttpExecutor.getWithRetry(spec, Endpoints.Github.RATE_LIMIT, 3, null);
 
     assertThat(resp.statusCode()).isEqualTo(OK);
     assertThat(server.getRequestCount()).isEqualTo(2);
@@ -76,7 +72,8 @@ class HttpExecutorTest {
     server.enqueue(new MockResponse().setResponseCode(SERVICE_UNAVAILABLE));
 
     var resp =
-        HttpExecutor.postWithRetry(spec, REPOS, om.writeValueAsString(java.util.Map.of()), 3, null);
+        HttpExecutor.postWithRetry(
+            spec, Endpoints.Github.REPOS, om.writeValueAsString(java.util.Map.of()), 3, null);
 
     assertThat(resp.statusCode()).isEqualTo(SERVICE_UNAVAILABLE);
     assertThat(server.getRequestCount()).isEqualTo(1);
@@ -88,7 +85,7 @@ class HttpExecutorTest {
     server.enqueue(
         new MockResponse().setResponseCode(TOO_MANY_REQUESTS).addHeader("Retry-After", "5"));
 
-    var resp = HttpExecutor.getWithRetry(spec, SEARCH, 4, null);
+    var resp = HttpExecutor.getWithRetry(spec, Endpoints.Github.SEARCH, 4, null);
 
     assertThat(resp.statusCode()).isEqualTo(TOO_MANY_REQUESTS);
     assertThat(server.getRequestCount()).isEqualTo(1);
@@ -101,7 +98,7 @@ class HttpExecutorTest {
     server.enqueue(new MockResponse().setResponseCode(SERVICE_UNAVAILABLE));
     server.enqueue(new MockResponse().setResponseCode(SERVICE_UNAVAILABLE));
 
-    var resp = HttpExecutor.getWithRetry(spec, PING, 3, null);
+    var resp = HttpExecutor.getWithRetry(spec, Endpoints.Mock.PING, 3, null);
 
     assertThat(resp.statusCode()).isEqualTo(SERVICE_UNAVAILABLE);
     assertThat(server.getRequestCount()).isEqualTo(3);
