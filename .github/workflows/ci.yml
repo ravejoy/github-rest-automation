@@ -27,6 +27,7 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+
     steps:
       - uses: actions/checkout@v4
 
@@ -49,6 +50,9 @@ jobs:
           command: ./gradlew --no-daemon spotlessCheck
 
       - name: Build & test with coverage (with retry)
+        env:
+          API_URL: https://api.github.com
+          TOKEN: ${{ github.token }}
         uses: nick-invision/retry@v3
         with:
           timeout_minutes: 20
@@ -109,6 +113,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -125,6 +130,9 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build for Sonar (with retry)
+        env:
+          API_URL: https://api.github.com
+          TOKEN: ${{ github.token }}
         uses: nick-invision/retry@v3
         with:
           timeout_minutes: 15

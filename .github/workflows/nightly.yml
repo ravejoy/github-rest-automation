@@ -17,6 +17,7 @@ jobs:
   nightly-report:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+
     steps:
       - uses: actions/checkout@v4
 
@@ -31,6 +32,9 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Nightly build & test (with retry)
+        env:
+          API_URL: https://api.github.com
+          TOKEN: ${{ github.token }}
         uses: nick-invision/retry@v3
         with:
           timeout_minutes: 20
