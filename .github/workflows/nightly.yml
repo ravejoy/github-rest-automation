@@ -43,6 +43,16 @@ jobs:
           retry_on: error
           command: ./gradlew --no-daemon clean test jacocoTestReport
 
+      - name: Debug Allure directories
+        if: always()
+        run: |
+          echo "=== build/allure/allure-results ==="
+          ls -la build/allure/allure-results || true
+          echo "count:" $(ls -1 build/allure/allure-results 2>/dev/null | wc -l || echo 0)
+          echo "=== build/reports/allure-report/allureReport ==="
+          ls -la build/reports/allure-report/allureReport || true
+          echo "data files:" $(ls -1 build/reports/allure-report/allureReport/data 2>/dev/null | wc -l || echo 0)
+
       - name: Generate Allure report (Gradle)
         run: ./gradlew --no-daemon clean test jacocoTestReport allureReport
 
