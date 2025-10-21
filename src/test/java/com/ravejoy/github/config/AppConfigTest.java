@@ -14,7 +14,7 @@ import org.junit.jupiter.api.*;
 @Feature("Application config")
 class AppConfigTest {
 
-  private static final String KEY_API = "API_URL";   // підстав, якщо у тебе інші ключі
+  private static final String KEY_API = "API_URL";   
   private static final String KEY_TOKEN = "TOKEN";
   private static final String API_VAL = "https://api.github.com";
   private static final String TOKEN_VAL = "ci-token";
