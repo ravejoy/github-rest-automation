@@ -80,14 +80,14 @@ jobs:
         if: always()
         with:
           allure_results: build/allure-results
-          allure_report: build/allure-report
+          allure_report: build/reports/allure-report/allureReport
 
       - name: Upload Allure report artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: allure-report
-          path: build/allure-report
+          path: build/reports/allure-report/allureReport
           if-no-files-found: ignore
 
       - name: Publish unit test summary
