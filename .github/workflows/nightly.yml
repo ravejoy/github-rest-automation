@@ -35,6 +35,7 @@ jobs:
         env:
           API_URL: https://api.github.com
           TOKEN: ${{ github.token }}
+          TEST_USER: ravejoy-test
         uses: nick-invision/retry@v3
         with:
           timeout_minutes: 20
