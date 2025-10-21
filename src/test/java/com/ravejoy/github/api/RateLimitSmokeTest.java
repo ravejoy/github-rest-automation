@@ -1,4 +1,4 @@
-package com.ravejoy.github;
+package com.ravejoy.github.api;
 
 import static com.ravejoy.github.http.StatusCode.OK;
 import static org.assertj.core.api.Assertions.assertThat;
