@@ -46,6 +46,7 @@ tasks.test {
                 ?.split(",")?.map { it.trim() }?.toTypedArray()
         if (exclude != null) excludeTags(*exclude)
     }
+    systemProperty("allure.results.directory", "$buildDir/allure-results")
     reports {
         junitXml.required.set(true)
         html.required.set(true)
