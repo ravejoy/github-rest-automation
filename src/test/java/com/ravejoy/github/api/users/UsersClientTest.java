@@ -15,6 +15,9 @@ import org.junit.jupiter.api.*;
 @Feature("Users client")
 class UsersClientTest {
 
+  private static final String USER_LOGIN = "ravejoy-test";
+  private static final long USER_ID = 42L;
+
   private MockWebServer server;
   private RequestSpecification spec;
   private UsersClient client;
@@ -38,23 +41,30 @@ class UsersClientTest {
     var json =
         """
         {
-          "id": 42,
-          "login": "ravejoy-test",
-          "html_url": "https://github.com/ravejoy-test",
+          "id": %d,
+          "login": "%s",
+          "html_url": "https://github.com/%s",
           "name": "Test User",
-          "company": "Test Ltd.",
+          "company": "Test ltd",
           "location": "Earth",
           "bio": "Some interesting bio"
         }
-        """;
+        """.formatted(USER_ID, USER_LOGIN, USER_LOGIN);
 
-    server.enqueue(new MockResponse().setResponseCode(OK).setBody(json));
+    server.enqueue(
+        new MockResponse()
+            .setResponseCode(OK)
+            .addHeader("Content-Type", "application/json")
+            .setBody(json));
 
-    var user = client.getUser("ravejoy-test");
+    var user = client.getUser(USER_LOGIN);
 
-    assertThat(user.id()).isEqualTo(42);
-    assertThat(user.login()).isEqualTo("ravejoy-test");
+    assertThat(user.id()).isEqualTo(USER_ID);
+    assertThat(user.login()).isEqualTo(USER_LOGIN);
     assertThat(user.htmlUrl()).contains("github.com");
     assertThat(user.name()).isEqualTo("Test User");
+
+    var recorded = server.takeRequest();
+    assertThat(recorded.getPath()).isEqualTo("/users/" + USER_LOGIN);
   }
 }
