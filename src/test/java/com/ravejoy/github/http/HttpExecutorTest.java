@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ravejoy.github.api.Endpoints;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -35,12 +34,7 @@ class HttpExecutorTest {
     server = new MockWebServer();
     server.start();
     String base = server.url("").toString();
-    spec =
-        new RequestSpecBuilder()
-            .setBaseUri(base.endsWith("/") ? base.substring(0, base.length() - 1) : base)
-            .addHeader("Accept", "application/vnd.github+json")
-            .addHeader("X-GitHub-Api-Version", "2022-11-28")
-            .build();
+    spec = RequestSpecs.mock(base);
   }
 
   @AfterEach

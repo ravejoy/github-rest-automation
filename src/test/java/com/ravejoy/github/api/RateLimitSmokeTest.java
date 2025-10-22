@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ravejoy.github.config.AppConfig;
 import com.ravejoy.github.config.TestConfig;
+import com.ravejoy.github.http.RequestSpecs;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.RestAssured;
@@ -21,7 +22,8 @@ class RateLimitSmokeTest {
   @Test
   @DisplayName("GET /rate_limit returns 200 and has 'resources' node")
   void rateLimitEndpointResponds200AndHasResourcesNode() {
-    var resp = RestAssured.given().baseUri(AppConfig.API_URL).get(Endpoints.Github.RATE_LIMIT);
+    var spec = RequestSpecs.github(AppConfig.API_URL, AppConfig.TOKEN);
+    var resp = RestAssured.given().spec(spec).get(Endpoints.Github.RATE_LIMIT);
 
     resp.then().statusCode(OK);
     assertThat(resp.jsonPath().getMap("resources")).isNotNull();
