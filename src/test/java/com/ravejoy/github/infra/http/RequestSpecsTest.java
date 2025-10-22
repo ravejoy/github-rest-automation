@@ -1,4 +1,4 @@
-package com.ravejoy.github.http;
+package com.ravejoy.github.infra.http;
 
 import static com.ravejoy.github.http.StatusCode.OK;
 import static io.restassured.RestAssured.given;
@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import com.ravejoy.github.http.RequestSpecs;
 
 @Tag("infra")
 @Tag("unit")
