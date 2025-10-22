@@ -9,6 +9,10 @@ public final class Endpoints {
     public static final String RATE_LIMIT = "rate_limit";
     public static final String REPOS = "repos";
     public static final String SEARCH = "search";
+
+    public static String user(String username) {
+      return "users/" + username;
+    }
   }
 
   public static final class Mock {

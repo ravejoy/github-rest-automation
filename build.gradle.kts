@@ -37,6 +37,8 @@ dependencies {
     testFixturesImplementation(platform("org.junit:junit-bom:5.11.3"))
     testFixturesImplementation("org.junit.jupiter:junit-jupiter-api")
     testFixturesImplementation("io.qameta.allure:allure-junit5:2.29.0")
+    testFixturesImplementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+    testFixturesImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }
 
 tasks.test {
