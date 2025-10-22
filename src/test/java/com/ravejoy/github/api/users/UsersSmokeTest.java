@@ -7,6 +7,7 @@ import com.ravejoy.github.api.users.model.User;
 import com.ravejoy.github.config.AppConfig;
 import com.ravejoy.github.http.RequestSpecs;
 import com.ravejoy.github.support.TestConfig;
+import com.ravejoy.github.support.http.GitHubWeb;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.*;
 
@@ -24,6 +25,6 @@ class UsersSmokeTest {
     User user = client.getUser(login);
 
     assertThat(user.login()).isEqualTo(login);
-    assertThat(user.htmlUrl()).startsWith("https://github.com/");
+    assertThat(user.htmlUrl()).startsWith(GitHubWeb.BASE + "/");
   }
 }

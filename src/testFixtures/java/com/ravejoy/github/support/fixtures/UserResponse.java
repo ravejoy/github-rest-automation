@@ -1,5 +1,7 @@
 package com.ravejoy.github.support.fixtures;
 
+import com.ravejoy.github.support.http.GitHubWeb;
+
 public record UserResponse(
     long id,
     String login,
@@ -7,17 +9,15 @@ public record UserResponse(
     String name,
     String company,
     String location,
-    String bio
-) {
+    String bio) {
   public static UserResponse of(long id, String login) {
     return new UserResponse(
         id,
         login,
-        "https://github.com/" + login,
+        GitHubWeb.userHtml(login),
         "Test User",
         "Test ltd",
         "Earth",
-        "Some interesting bio"
-    );
+        "Some interesting bio");
   }
 }
