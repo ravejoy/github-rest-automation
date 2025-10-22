@@ -1,4 +1,4 @@
-package com.ravejoy.github.config;
+package com.ravejoy.github.infra.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,6 +9,8 @@ import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+
+import com.ravejoy.github.config.AppConfig;
 
 @Tag("infra")
 @Tag("unit")
