@@ -3,6 +3,7 @@ plugins {
     jacoco
     id("com.diffplug.spotless") version "6.25.0"
     id("io.qameta.allure") version "2.12.0"
+    `java-test-fixtures`
 }
 
 group = "com.ravejoy.github"
@@ -32,6 +33,10 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     testImplementation("ch.qos.logback:logback-classic:1.5.8")
     testImplementation("io.qameta.allure:allure-junit5:2.29.0")
+
+    testFixturesImplementation(platform("org.junit:junit-bom:5.11.3"))
+    testFixturesImplementation("org.junit.jupiter:junit-jupiter-api")
+    testFixturesImplementation("io.qameta.allure:allure-junit5:2.29.0")
 }
 
 tasks.test {
