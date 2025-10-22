@@ -3,6 +3,7 @@ plugins {
     jacoco
     id("com.diffplug.spotless") version "6.25.0"
     id("io.qameta.allure") version "2.12.0"
+    `java-test-fixtures`
 }
 
 group = "com.ravejoy.github"
