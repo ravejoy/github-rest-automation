@@ -8,10 +8,10 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import com.ravejoy.github.annotations.InfraUnit;
 import com.ravejoy.github.api.Endpoints;
 import com.ravejoy.github.http.RequestSpecs;
 import com.ravejoy.github.http.filter.HttpLoggingFilter;
-import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.specification.RequestSpecification;
 import okhttp3.mockwebserver.MockResponse;
@@ -19,13 +19,10 @@ import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
-@Tag("infra")
-@Tag("unit")
-@Epic("HTTP infra")
+@InfraUnit
 @Feature("Logging filter")
 class HttpLoggingFilterTest {
 
