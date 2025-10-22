@@ -45,8 +45,14 @@ class HttpExecutorTest {
   @Test
   @DisplayName("GET retries once on 503 and succeeds on second attempt")
   void getRetriesOnceOn503AndSucceedsOnSecondAttempt() throws Exception {
-    server.enqueue(new MockResponse().setResponseCode(SERVICE_UNAVAILABLE).setBody(om.writeValueAsString(java.util.Map.of())));
-    server.enqueue(new MockResponse().setResponseCode(OK).setBody(om.writeValueAsString(java.util.Map.of("ok", true))));
+    server.enqueue(
+        new MockResponse()
+            .setResponseCode(SERVICE_UNAVAILABLE)
+            .setBody(om.writeValueAsString(java.util.Map.of())));
+    server.enqueue(
+        new MockResponse()
+            .setResponseCode(OK)
+            .setBody(om.writeValueAsString(java.util.Map.of("ok", true))));
 
     var resp = HttpExecutor.getWithRetry(spec, Endpoints.Github.RATE_LIMIT, 3, null);
 
@@ -59,7 +65,9 @@ class HttpExecutorTest {
   void postIsNotRetriedOn503() throws Exception {
     server.enqueue(new MockResponse().setResponseCode(SERVICE_UNAVAILABLE));
 
-    var resp = HttpExecutor.postWithRetry(spec, Endpoints.Github.REPOS, om.writeValueAsString(java.util.Map.of()), 3, null);
+    var resp =
+        HttpExecutor.postWithRetry(
+            spec, Endpoints.Github.REPOS, om.writeValueAsString(java.util.Map.of()), 3, null);
 
     assertThat(resp.statusCode()).isEqualTo(SERVICE_UNAVAILABLE);
     assertThat(server.getRequestCount()).isEqualTo(1);
@@ -68,7 +76,8 @@ class HttpExecutorTest {
   @Test
   @DisplayName("GET 429 with Retry-After is not retried")
   void get429WithRetryAfterIsNotRetried() throws Exception {
-    server.enqueue(new MockResponse().setResponseCode(TOO_MANY_REQUESTS).addHeader("Retry-After", "5"));
+    server.enqueue(
+        new MockResponse().setResponseCode(TOO_MANY_REQUESTS).addHeader("Retry-After", "5"));
 
     var resp = HttpExecutor.getWithRetry(spec, Endpoints.Github.SEARCH, 4, null);
 

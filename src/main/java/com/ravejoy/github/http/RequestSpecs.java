@@ -1,9 +1,9 @@
 package com.ravejoy.github.http;
 
+import com.ravejoy.github.http.filter.HttpLoggingFilter;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.specification.RequestSpecification;
-import com.ravejoy.github.http.filter.HttpLoggingFilter;
 
 public final class RequestSpecs {
 
