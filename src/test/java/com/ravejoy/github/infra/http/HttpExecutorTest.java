@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ravejoy.github.api.Endpoints;
 import com.ravejoy.github.http.HttpExecutor;
 import com.ravejoy.github.http.RequestSpecs;
-
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.specification.RequestSpecification;

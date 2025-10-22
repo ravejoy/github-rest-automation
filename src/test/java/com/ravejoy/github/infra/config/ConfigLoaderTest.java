@@ -3,13 +3,12 @@ package com.ravejoy.github.infra.config;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.ravejoy.github.config.ConfigLoader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import org.junit.jupiter.api.*;
-
-import com.ravejoy.github.config.ConfigLoader;
 
 @Tag("infra")
 @Tag("unit")

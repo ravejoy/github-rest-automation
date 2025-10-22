@@ -4,6 +4,7 @@ import static com.ravejoy.github.http.StatusCode.OK;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ravejoy.github.http.RequestSpecs;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.specification.RequestSpecification;
@@ -14,8 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
-import com.ravejoy.github.http.RequestSpecs;
 
 @Tag("infra")
 @Tag("unit")
