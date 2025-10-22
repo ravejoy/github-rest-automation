@@ -4,8 +4,8 @@ import static com.ravejoy.github.http.StatusCode.OK;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.ravejoy.github.config.AppConfig;
-import com.ravejoy.github.config.TestConfig;
 import com.ravejoy.github.http.RequestSpecs;
+import com.ravejoy.github.support.TestConfig;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.RestAssured;

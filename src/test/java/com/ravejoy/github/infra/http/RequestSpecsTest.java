@@ -1,9 +1,10 @@
-package com.ravejoy.github.http;
+package com.ravejoy.github.infra.http;
 
 import static com.ravejoy.github.http.StatusCode.OK;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.ravejoy.github.http.RequestSpecs;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.specification.RequestSpecification;

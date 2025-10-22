@@ -1,8 +1,9 @@
-package com.ravejoy.github.config;
+package com.ravejoy.github.infra.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.ravejoy.github.config.ConfigLoader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;

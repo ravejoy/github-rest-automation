@@ -1,4 +1,4 @@
-package com.ravejoy.github.http;
+package com.ravejoy.github.infra.http;
 
 import static com.ravejoy.github.http.StatusCode.OK;
 import static io.restassured.RestAssured.given;
@@ -9,6 +9,7 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import com.ravejoy.github.api.Endpoints;
+import com.ravejoy.github.http.RequestSpecs;
 import com.ravejoy.github.http.filter.HttpLoggingFilter;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
