@@ -49,7 +49,8 @@ class UsersClientTest {
           "location": "Earth",
           "bio": "Some interesting bio"
         }
-        """.formatted(USER_ID, USER_LOGIN, USER_LOGIN);
+        """
+            .formatted(USER_ID, USER_LOGIN, USER_LOGIN);
 
     server.enqueue(
         new MockResponse()
