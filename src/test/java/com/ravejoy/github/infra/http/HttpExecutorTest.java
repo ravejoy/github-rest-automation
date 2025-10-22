@@ -6,10 +6,10 @@ import static com.ravejoy.github.http.StatusCode.TOO_MANY_REQUESTS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ravejoy.github.annotations.InfraUnit;
 import com.ravejoy.github.api.Endpoints;
 import com.ravejoy.github.http.HttpExecutor;
 import com.ravejoy.github.http.RequestSpecs;
-import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.specification.RequestSpecification;
 import okhttp3.mockwebserver.MockResponse;
@@ -17,12 +17,9 @@ import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-@Tag("infra")
-@Tag("unit")
-@Epic("HTTP infra")
+@InfraUnit
 @Feature("Retry logic")
 class HttpExecutorTest {
 
